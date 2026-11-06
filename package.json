@@ -1,0 +1,64 @@
+{
+  "name": "daylight-desktop",
+  "version": "0.1.0",
+  "description": "今日 Daylight — 用优先级与时间区块，安排从容的一天。",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.cjs",
+  "author": "Daylight contributors",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "overrides": {
+    "minimatch@>=7.0.0": "^11.0.1"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"vite --host 127.0.0.1\" \"wait-on http://127.0.0.1:5173 && electron . --dev\"",
+    "build": "vite build",
+    "start": "electron .",
+    "test": "node --test tests/model.test.js",
+    "test:e2e": "npm run build && node tests/desktop.cjs",
+    "dist": "npm run build && electron-builder --win portable --x64",
+    "pack": "npm run build && electron-builder --dir"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "lucide-react": "^0.468.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "concurrently": "^9.2.1",
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0",
+    "playwright": "latest",
+    "vite": "8.3.6",
+    "wait-on": "^9.0.3"
+  },
+  "build": {
+    "appId": "app.daylight.desktop",
+    "productName": "Daylight",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "shared/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "signExecutable": false,
+      "icon": "build/daylight.ico",
+      "artifactName": "Daylight-${version}-Windows-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Daylight-${version}-Windows-${arch}.${ext}"
+    }
+  }
+}
